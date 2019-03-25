@@ -16,6 +16,7 @@ import LoginPage from 'containers/LoginPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
+import definePrototype from './definePrototype';
 // Styles
 // CoreUI Icons Set
 import '@coreui/icons/css/coreui-icons.css';
@@ -28,6 +29,7 @@ import 'simple-line-icons/css/simple-line-icons.css';
 // Import Main styles for this application
 import '../../scss/style.scss';
 
+definePrototype();
 
 export default function App() {
   return (

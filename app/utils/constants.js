@@ -7,3 +7,4 @@ export const ROUTER = {
   LOGIN: '/login',
   FORGOT_PASSWORD: 'forgot-password',
 };
+export const USER_LOGIN_TOKEN = 'USER_LOGIN_TOKEN';
