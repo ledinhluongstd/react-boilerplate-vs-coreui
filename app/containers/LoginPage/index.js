@@ -20,7 +20,7 @@ import { handleRedirectTo } from '../../utils/commonFunction';
 import { ROUTER } from '../../utils/constants';
 
 /* eslint-disable react/prefer-stateless-function */
-class Login extends React.PureComponent {
+class LoginPage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -136,4 +136,4 @@ class Login extends React.PureComponent {
   }
 }
 
-export default Login;
+export default LoginPage;

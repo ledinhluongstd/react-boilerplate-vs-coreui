@@ -12,8 +12,8 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
-
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import ForgotPasswordPage from '../ForgotPasswordPage';
 
 import GlobalStyle from '../../global-styles';
 import definePrototype from './definePrototype';
@@ -28,6 +28,8 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'simple-line-icons/css/simple-line-icons.css';
 // Import Main styles for this application
 import '../../scss/style.scss';
+import { ROUTER } from '../../utils/constants';
+import RegisterPage from '../RegisterPage';
 
 definePrototype();
 
@@ -35,8 +37,14 @@ export default function App() {
   return (
     <div>
       <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route exact path="/login" component={LoginPage} />
+        <Route exact path={ROUTER.HOME} component={HomePage} />
+        <Route exact path={ROUTER.LOGIN} component={LoginPage} />
+        <Route
+          exact
+          path={ROUTER.FORGOT_PASSWORD}
+          component={ForgotPasswordPage}
+        />
+        <Route exact path={ROUTER.REGISTER} component={RegisterPage} />
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
