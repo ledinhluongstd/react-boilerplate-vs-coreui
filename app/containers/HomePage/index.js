@@ -18,6 +18,7 @@ export default class HomePage extends React.PureComponent {
   render() {
     return (
       <h1>
+        hihi
         <FormattedMessage {...messages.header} />
       </h1>
     );
