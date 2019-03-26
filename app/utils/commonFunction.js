@@ -63,6 +63,11 @@ function clone(object) {
   return JSON.parse(JSON.stringify(object));
 }
 
+function checkValidate() {}
+
+function consoleLog(data) {
+  if (process.env.NODE_ENV !== 'production') console.log(data);
+}
 export {
   handleRedirectTo,
   getCookie,
@@ -71,4 +76,6 @@ export {
   checkCookie,
   isEmpty,
   clone,
+  consoleLog,
+  checkValidate,
 };

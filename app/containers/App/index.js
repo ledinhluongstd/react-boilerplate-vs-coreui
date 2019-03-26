@@ -30,15 +30,17 @@ import 'simple-line-icons/css/simple-line-icons.css';
 import '../../scss/style.scss';
 import { ROUTER } from '../../utils/constants';
 import RegisterPage from '../RegisterPage';
+// import { consoleLog } from '../../utils/commonFunction';
 
 definePrototype();
 
 export default function App() {
+  // consoleLog(props.store);
   return (
     <div>
       <Switch>
-        <Route exact path={ROUTER.HOME} component={HomePage} />
         <Route exact path={ROUTER.LOGIN} component={LoginPage} />
+        <Route exact path={ROUTER.HOME} component={HomePage} />
         <Route
           exact
           path={ROUTER.FORGOT_PASSWORD}

@@ -1,6 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-// import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import {
   Button,
   Card,
@@ -15,20 +18,34 @@ import {
   InputGroupText,
   Row,
 } from 'reactstrap';
+import injectReducer from '../../utils/injectReducer';
+import injectSaga from '../../utils/injectSaga';
+import {
+  makeToken,
+  makeSelectLoading,
+  makeSelectError,
+} from '../App/selectors';
+import { userLogin } from '../App/actions';
+import { changeUsername, changePassword } from './actions';
+import { makeTokenname, makeSelectPassword } from './selectors';
+import reducer from './reducer';
+import saga from './saga';
+
 import messages from './messages';
 import { handleRedirectTo } from '../../utils/commonFunction';
 import { ROUTER } from '../../utils/constants';
 
 /* eslint-disable react/prefer-stateless-function */
-class LoginPage extends React.PureComponent {
+export class LoginPage extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      user: {
-        username: '',
-        password: '',
-      },
-    };
+    this.state = {};
+  }
+
+  componentDidMount() {
+    if (this.props.username && this.props.username.trim().length > 0) {
+      this.props.onSubmitForm();
+    }
   }
 
   changeElement(event) {
@@ -38,11 +55,21 @@ class LoginPage extends React.PureComponent {
 
   handleLogin(event) {
     event.preventDefault();
-    console.log('1111');
+    this.props.onSubmitForm();
+  }
+
+  handleKeyDown(event) {
+    if (event.keyCode === 13) {
+      this.handleLogin(event);
+    }
   }
 
   render() {
-    const { user } = this.state;
+    const {
+      // token, loading, error,
+      username,
+      password,
+    } = this.props;
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -68,8 +95,10 @@ class LoginPage extends React.PureComponent {
                         </InputGroupAddon>
                         <Input
                           type="text"
-                          onChange={event => this.changeElement(event)}
-                          value={user.username}
+                          // onChange={event => this.changeElement(event)}
+                          onChange={this.props.onChangeUsername}
+                          onKeyDown={event => this.handleKeyDown(event)}
+                          value={username}
                           id="username"
                           placeholder={messages.username.defaultMessage}
                           autoComplete="username"
@@ -83,8 +112,10 @@ class LoginPage extends React.PureComponent {
                         </InputGroupAddon>
                         <Input
                           type="password"
-                          onChange={event => this.changeElement(event)}
-                          value={user.password}
+                          // onChange={event => this.changeElement(event)}
+                          onChange={this.props.onChangePassword}
+                          onKeyDown={event => this.handleKeyDown(event)}
+                          value={password}
                           id="password"
                           placeholder={messages.password.defaultMessage}
                           autoComplete="current-password"
@@ -93,7 +124,7 @@ class LoginPage extends React.PureComponent {
                       <Row>
                         <Col xs="6">
                           <Button
-                            onClick={() => this.handleLogin()}
+                            onClick={event => this.handleLogin(event)}
                             color="primary"
                             className="px-4"
                           >
@@ -136,4 +167,48 @@ class LoginPage extends React.PureComponent {
   }
 }
 
-export default LoginPage;
+LoginPage.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  token: PropTypes.object,
+  onSubmitForm: PropTypes.func,
+  username: PropTypes.string,
+  password: PropTypes.string,
+  onChangeUsername: PropTypes.func,
+  onChangePassword: PropTypes.func,
+};
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    onChangeUsername: evt => {
+      dispatch(changeUsername(evt.target.value));
+    },
+    onChangePassword: evt => dispatch(changePassword(evt.target.value)),
+    onSubmitForm: evt => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(userLogin());
+    },
+  };
+}
+
+const mapStateToProps = createStructuredSelector({
+  token: makeToken(),
+  username: makeTokenname(),
+  password: makeSelectPassword(),
+  loading: makeSelectLoading(),
+  error: makeSelectError(),
+});
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+const withReducer = injectReducer({ key: 'login', reducer });
+const withSaga = injectSaga({ key: 'login', saga });
+
+export default compose(
+  withReducer,
+  withSaga,
+  withConnect,
+)(LoginPage);
