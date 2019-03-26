@@ -35,7 +35,6 @@ import RegisterPage from '../RegisterPage';
 definePrototype();
 
 export default function App() {
-  // consoleLog(props.store);
   return (
     <div>
       <Switch>

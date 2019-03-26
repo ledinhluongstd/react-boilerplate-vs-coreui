@@ -27,7 +27,7 @@ import {
 } from '../App/selectors';
 import { userLogin } from '../App/actions';
 import { changeUsername, changePassword } from './actions';
-import { makeTokenname, makeSelectPassword } from './selectors';
+import { makeSelectUsername, makeSelectPassword } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
@@ -39,7 +39,9 @@ import { ROUTER } from '../../utils/constants';
 export class LoginPage extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showPassword: false,
+    };
   }
 
   componentDidMount() {
@@ -64,12 +66,21 @@ export class LoginPage extends React.PureComponent {
     }
   }
 
+  handleShowHidePass() {
+    this.state.showPassword = !this.state.showPassword;
+    this.forceUpdate();
+  }
+
   render() {
+    const { showPassword } = this.state;
     const {
-      // token, loading, error,
+      // token,
+      // error,
+      // loading,
       username,
       password,
     } = this.props;
+    const typePassword = showPassword ? 'text' : 'password';
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -111,7 +122,7 @@ export class LoginPage extends React.PureComponent {
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input
-                          type="password"
+                          type={typePassword}
                           // onChange={event => this.changeElement(event)}
                           onChange={this.props.onChangePassword}
                           onKeyDown={event => this.handleKeyDown(event)}
@@ -120,6 +131,13 @@ export class LoginPage extends React.PureComponent {
                           placeholder={messages.password.defaultMessage}
                           autoComplete="current-password"
                         />
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText
+                            onClick={() => this.handleShowHidePass()}
+                          >
+                            <i className="icon-eye" />
+                          </InputGroupText>
+                        </InputGroupAddon>
                       </InputGroup>
                       <Row>
                         <Col xs="6">
@@ -193,7 +211,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   token: makeToken(),
-  username: makeTokenname(),
+  username: makeSelectUsername(),
   password: makeSelectPassword(),
   loading: makeSelectLoading(),
   error: makeSelectError(),

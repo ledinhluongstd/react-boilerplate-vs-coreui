@@ -17,7 +17,7 @@ import { Input, Button } from 'reactstrap';
 // import messages from './messages';
 import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
-import { makeTokenname } from './selectors';
+import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import { ROUTER } from '../../utils/constants';
@@ -92,7 +92,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   // repos: makeSelectRepos(),
-  username: makeTokenname(),
+  username: makeSelectUsername(),
   // loading: makeSelectLoading(),
   // error: makeSelectError(),
 });

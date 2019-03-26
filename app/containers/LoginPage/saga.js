@@ -3,14 +3,14 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { USER_LOGIN } from '../App/constants';
 import { userLoaded, userLoadingError } from '../App/actions';
 
-import { makeTokenname, makeSelectPassword } from './selectors';
+import { makeSelectUsername, makeSelectPassword } from './selectors';
 
 import API from './loginApi';
 
 const api = API.create();
 
 export function* tokenData() {
-  const username = yield select(makeTokenname());
+  const username = yield select(makeSelectUsername());
   const password = yield select(makeSelectPassword());
   try {
     const token = yield call(api.userLogin, { username, password });

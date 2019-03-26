@@ -14,7 +14,7 @@ import { USER_LOGIN_TOKEN } from '../../utils/constants';
 const initialState = fromJS({
   loading: false,
   error: false,
-  token: false,
+  token: {},
   userData: false,
   currentUser: false,
 });
@@ -25,10 +25,10 @@ function appReducer(state = initialState, action) {
       return state
         .set('loading', true)
         .set('error', false)
-        .setIn('token', false);
+        .set('token', {});
     case USER_LOGIN_SUCCESS:
       setCookie(USER_LOGIN_TOKEN, action.token.token);
-      return state.set('loading', false).setIn('token', action.token);
+      return state.set('loading', false).set('token', action.token);
     case USER_LOGIN_ERROR:
       return state.set('error', action.error).set('loading', false);
     // ////////////////////////////////////////
@@ -36,10 +36,10 @@ function appReducer(state = initialState, action) {
       return state
         .set('loading', true)
         .set('error', false)
-        .setIn('userData', false);
+        .set('userData', false);
     case LOAD_REPOS_SUCCESS:
       return state
-        .setIn('userData', action.repos)
+        .set('userData', action.repos)
         .set('loading', false)
         .set('currentUser', action.username);
     case LOAD_REPOS_ERROR:
